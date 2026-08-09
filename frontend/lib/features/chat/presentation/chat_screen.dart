@@ -53,8 +53,7 @@ class _MessageBubble extends StatelessWidget {
   final Message message;
   @override
   Widget build(BuildContext context) {
-    const currentUser = _currentUserId;
-    final isMine = message.senderId == currentUser;
+    final isMine = message.senderId == currentUserId;
     final colors = Theme.of(context).colorScheme;
     return Align(
       alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
@@ -79,10 +78,41 @@ class _Composer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sending = ref.watch(composerProvider);
     Future<void> send() async { final text = input.text; await ref.read(composerProvider.notifier).send(text); if (text.trim().isNotEmpty) input.clear(); }
-    return SafeArea(top: false, child: Padding(padding: const EdgeInsets.fromLTRB(12, 8, 12, 12), child: Row(children: [
-      Expanded(child: TextField(controller: input, enabled: !sending, minLines: 1, maxLines: 4, onSubmitted: (_) => send(), decoration: const InputDecoration(hintText: 'Type a whisper...', border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(28))))),
-      const SizedBox(width: 8), IconButton.filled(onPressed: sending ? null : send, icon: sending ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.send)),
-    ])));
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: input,
+                enabled: !sending,
+                minLines: 1,
+                maxLines: 4,
+                onSubmitted: (_) => send(),
+                decoration: const InputDecoration(
+                  hintText: 'Type a whisper...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(28)),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton.filled(
+              onPressed: sending ? null : send,
+              icon: sending
+                  ? const SizedBox.square(
+                      dimension: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.send),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

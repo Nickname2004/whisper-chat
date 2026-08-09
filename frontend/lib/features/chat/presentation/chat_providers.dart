@@ -5,10 +5,10 @@ import '../domain/chat_repository.dart';
 import '../domain/message.dart';
 
 const _endpoint = String.fromEnvironment('WS_URL', defaultValue: 'ws://localhost:8080/ws');
-const _currentUserId = String.fromEnvironment('USER_ID', defaultValue: 'local-user');
+const currentUserId = String.fromEnvironment('USER_ID', defaultValue: 'local-user');
 
 final chatRepositoryProvider = Provider<ChatRepository>((ref) {
-  final repository = WebSocketChatRepository(endpoint: _endpoint, userId: _currentUserId);
+  final repository = WebSocketChatRepository(endpoint: _endpoint, userId: currentUserId);
   ref.onDispose(repository.dispose);
   return repository;
 });

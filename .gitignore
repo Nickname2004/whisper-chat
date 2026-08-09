@@ -12,3 +12,4 @@ build/
 
 # Go
 backend/whisper-api
+backend/whisper-api.exe
